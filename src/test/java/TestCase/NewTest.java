@@ -1,3 +1,5 @@
+package TestCase;
+
 import java.io.IOException;
 import java.util.Hashtable;
 import java.util.Properties;
