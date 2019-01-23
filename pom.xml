@@ -1,12 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>hf</groupId>
-	<artifactId>HairFood</artifactId>
+	<groupId>Assignment</groupId>
+	<artifactId>EPICOR</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>My HairFood Application</name>
-	<description>this project is belongs to P&amp;G account</description>
-
+	<name>EPICOR TEST</name>
 	<dependencies>
 		<dependency>
 			<groupId>org.seleniumhq.selenium</groupId>
