@@ -12,11 +12,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import pages.BasePage;
-import pages.Epicor_Page;
 
 public class NewTest {
 	BasePage base = new BasePage();
-	Epicor_Page epic = null;
 	WebDriver driver = null;
 	Properties prop = null;
 
@@ -27,10 +25,9 @@ public class NewTest {
 
 	@BeforeTest
 	public void beforeTest() throws IOException {
-		// driver = base.loadChromeDriver();
-		driver = base.loadIEDriver();
+		driver = base.loadChromeDriver();
+//		driver = base.loadIEDriver();
 		prop = base.loadproperties();
-		epic = new Epicor_Page(driver, prop, base);
 	}
 
 	@Test(dataProvider = "getData")
@@ -43,68 +40,67 @@ public class NewTest {
 		/*
 		 * Enter credentials and click on ->
 		 */
-		driver.findElement(By.id("txtUserID")).sendKeys("manager");
-		driver.findElement(By.id("txtPassword")).sendKeys("manager");
+		driver.findElement(By.id(prop.getProperty("UserID"))).sendKeys(testData.get("UserID"));
+		driver.findElement(By.id(prop.getProperty("Password"))).sendKeys(testData.get("Password"));
 		driver.findElement(By.id("btnLogin")).click();
-
-		for (String winHandle : driver.getWindowHandles()) {
-			driver.switchTo().window(winHandle);
-			driver.manage().window().maximize();
-		}
-		Thread.sleep(3000);
-		driver.switchTo().frame("menu");
-		Thread.sleep(3000);
+		
 		/*
-		 * Click on Epicor EDUCATION, followed by Main, followed by Financial
-		 * Management, followed by General Ledger, followed by Setup, followed
-		 * by General Ledger Account form.
+		 * Handle window and iframe 
+		 */
+		base.windowHandle();
+		base.waitfor(3000);
+		driver.switchTo().frame(prop.getProperty("Home_Menu_Iframe"));
+		base.waitfor(3000);
+		/*
+		 * Click on Epicor EDUCATION, 
+		 * followed by Main, 
+		 * followed by Financial Management, 
+		 * followed by General Ledger, 
+		 * followed by Setup, 
+		 * followed by General Ledger Account form.
 		 */
 		driver.findElement(By.linkText("Epicor Education")).click();
-		Thread.sleep(2000);
-		String classname = driver.findElement(By.xpath("//*[@id='tree']/ul/li[5]/ul/li[3]/span/span"))
-				.getAttribute("class");
+		base.waitfor(2000);
+		String classname = driver.findElement(By.xpath(prop.getProperty("Home_Menu_Main"))).getAttribute("class");
 		if (classname.contains("tree-expander"))
-			epic.clickOnLinkText("Financial Management");
-		Thread.sleep(1000);
-		epic.clickOnLinkText("General Ledger");
-		Thread.sleep(1000);
-		epic.clickOnLinkText("Setup");
-		Thread.sleep(3000);
-		driver.findElement(By.xpath("//*[@id='list']/div/span[15]")).click();
-		Thread.sleep(2000);
-		for (String winHandle : driver.getWindowHandles()) {
-			driver.switchTo().window(winHandle);
-			driver.manage().window().maximize();
-		}
+			base.clickOnLinkText("Financial Management");
+		base.waitfor(1000);
+		base.clickOnLinkText("General Ledger");
+		base.waitfor(1000);
+		base.clickOnLinkText("Setup");
+		base.waitfor(3000);
+		driver.findElement(By.xpath(prop.getProperty("Home_General_Ledger_Account"))).click();
+		base.waitfor(2000);
+		base.windowHandle();
 		/*
 		 * Click on New
 		 */
-		driver.findElement(By.cssSelector("button[data-key='NewTool']")).click();
-		Thread.sleep(3000);
+		driver.findElement(By.cssSelector(prop.getProperty("Header_GL_AC_page_New"))).click();
+		base.waitfor(3000);
 		/*
 		 * enter GL account (1238-01-20)
 		 */
-		driver.findElement(By.id("glaeGLAccount_dropText")).sendKeys(testData.get("GLAccount"));
-		Thread.sleep(3000);
+		driver.findElement(By.id(prop.getProperty("GL_AC_page_GLAccount_Input"))).sendKeys(testData.get("GLAccount"));
+		base.waitfor(3000);
 		/*
 		 * Click on save button on toolbar and Click on Yes
 		 */
-		driver.findElement(By.cssSelector("button[data-key='SaveTool']")).click();
-		Thread.sleep(3000);
+		driver.findElement(By.cssSelector(prop.getProperty("Header_GL_AC_page_Save"))).click();
+		base.waitfor(3000);
 		driver.switchTo().alert().accept();
-		Thread.sleep(3000);
+		base.waitfor(3000);
 
 		/*
 		 * Search Existing GL Account Click on GL Account
 		 */
-		driver.findElement(By.id("btnKeyField")).click();
+		driver.findElement(By.id(prop.getProperty("GL_AC_page_GL_Account_Button"))).click();
 		/*
 		 * Click on Natural accounts starting at, then enter 1238-01-20 (GL
 		 * Account)
 		 */
 		driver.switchTo().activeElement();
 		driver.findElement(By.id("txtNaturalAccount")).sendKeys(testData.get("GLAccount"));
-		driver.findElement(By.id("btnSearch")).click();
+		driver.findElement(By.id(prop.getProperty("Search_button"))).click();
 		/*
 		 * Click on Search, GL Account which was created should reflect in the
 		 * search list, Click on OK
@@ -113,20 +109,20 @@ public class NewTest {
 		/*
 		 * click on Menu
 		 */
-		driver.findElement(By.id(prop.getProperty("Menu"))).click();
+		driver.findElement(By.id(prop.getProperty("Header_GL_AC_page_Menu"))).click();
 		/*
 		 * Click on File
 		 */
-		driver.findElement(By.cssSelector(prop.getProperty("Menu_File"))).click();
+		driver.findElement(By.cssSelector(prop.getProperty("Header_GL_AC_page_Menu_File"))).click();
 
 		/*
 		 * Click on Delete
 		 */
-		driver.findElement(By.cssSelector(prop.getProperty("Menu_delete"))).click();
+		driver.findElement(By.cssSelector(prop.getProperty("Header_GL_AC_page_Menu_Delete"))).click();
 		/*
 		 * Click on Yes
 		 */
-		Thread.sleep(3000);
+		base.waitfor(3000);
 		driver.switchTo().alert().accept();
 
 	}
