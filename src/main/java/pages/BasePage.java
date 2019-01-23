@@ -99,6 +99,7 @@ public class BasePage {
 		for (String winHandle : driver.getWindowHandles()) {
 			driver.switchTo().window(winHandle);
 			driver.manage().window().maximize();
+			System.out.println(winHandle);
 		}
 	}
 	public void waitfor(int millisec) throws InterruptedException{
