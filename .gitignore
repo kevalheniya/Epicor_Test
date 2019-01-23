@@ -1,6 +1,6 @@
-target/
-.settings/
-test-output/
-.classpath/
-IEDriverServer.exe
+/target
+/.settings
+/test-output
+/IEDriverServer.exe
 /.classpath
+/.project
